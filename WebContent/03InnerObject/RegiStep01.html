@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실명확인</title>
+<style>
+    #submitBtn{
+        border-color: black;
+        background-color: white;
+        float: right;
+        width: 100px;
+        height: auto;
+    }
+    #submitBtn:hover{
+        background-color: #e5e5e5;
+    }
+</style>
+</head>
+<body>
+    
+    <Script>
+        function fnSubmit(){
+            var juTxt = document.subForm.juTxt;
+            var MinTxt = document.subForm.MinTxt;
+            var nameTxt = document.subForm.nameTxt;
+
+            if(juTxt.value==""){
+            alert("주민번호 앞자리를 입력하세요");
+            txtObj.focus();
+            return false;
+            }
+            if(MinTxt.value==""){
+            alert("주민번호 뒷자리를 입력하세요");
+            txtObj.focus();
+            return false;
+            }
+            if(nameTxt.value==""){
+            alert("이름를 입력하세요");
+            txtObj.focus();
+            return false;
+            }
+
+        }
+    </Script>
+
+    <form name="subForm" onsubmit="return fnSubmit();" action="">
+        <table>
+        <tr>
+            <td>주민번호<br/><br/></td>
+            <td>
+                <input type="text" style="width: 100px;" name="juTxt" maxlength="6"> -
+                <input type="text" style="width: 100px;" name="MinTxt" maxlength="7">
+                <br/><br/>
+            </td>
+        </tr>
+        <tr>
+            <td>이름<br/><br/><br></td>
+            <td>
+                <input type="text" name="nameTxt" style="width: 222px;" >
+                <br/><br/><br>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" id="submitBtn" value="다음">
+            </td>
+        </tr>
+    </table>
+    </form>
+    
+</body>
+</html>
