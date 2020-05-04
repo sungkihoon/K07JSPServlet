@@ -15,7 +15,9 @@
       <li>
          String타입 : <%=pageContext.getAttribute("pageString") %>
       </li>
-      <li>
+      <h1>실행시 주석해제후 지우세요</h1>
+      <!-- 실행시 주석해제 -->
+      <%-- <li>
          Date타입 : <%=dateString %>
       </li>
       <li>
@@ -26,7 +28,7 @@
                      비번 :<%=m2.getPass() %>,
                      이름 :<%=m2.getName() %>,
                      가입일 :<%=m2.getRegidate() %>
-      </li>         
+      </li>          --%>
    </ul>
 </body>
 </html>
