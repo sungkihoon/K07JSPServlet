@@ -1,3 +1,4 @@
+<%@page import="util.PagingUtil"%>
 <%@page import="model.BbsDTO"%>
 <%@page import="java.util.*"%>
 <%@page import="model.BbsDAO"%>
@@ -22,6 +23,9 @@
  */
  Map<String, Object> param = new HashMap<String, Object>();
  
+ //폼값을 받아서 파라미터를 저장할 변수 생성
+ String queryStr = "";//검색시 페이지번호로 쿼리스트링을 넘겨주기 위한 용도
+ 
  //검색어 입력시 전송된 폼값을 받아 Map이 저장
  String searchColumn = request.getParameter("searchColumn");
  String searchWord = request.getParameter("searchWord");
@@ -29,13 +33,44 @@
 	 //검색어를 입력한 경우 Map에 값을 입력함.
 	 param.put("Column", searchColumn);
 	 param.put("Word", searchWord);
+	 
+	 //검색어가 있을때 쿼리스트링을 만들어준다.
+	 queryStr = "searchColumn=" + searchColumn+"&searchWord="+searchWord+"&";
  }
  
  //bbs테이블에 입력된 전체 레코드 갯수를 카운트하며 반환했음
  int totalRecordCount = dao.getTotalRecordCount(param);
  
+ /*** 페이지처리 start ***/
+ //web.xml의 초기화 파라미터 가져와서 정수로 변경 후 저장
+ int pageSize = 
+		 Integer.parseInt(application.getInitParameter("PAGE_SIZE"));
+ int blockPage =
+		 Integer.parseInt(application.getInitParameter("BLOCK_PAGE"));
+ 
+ //전체페이지수 계산 => 105개 / 10 => 10.5 => cell(10.5) => 11
+ int totalPage = (int)Math.ceil((double)totalRecordCount/pageSize);
+ 
+ /*
+  현재페이지번호 : 파라미터가 없을때는 무조건 1페이지로 지정하고, 있을때는 해당 값을
+ 	얻어와서 지정한다. 즉 리스트에 처음 진입했을 때는 1페이지가 된다.
+ */
+ int nowPage = (request.getParameter("nowPage")==null
+		 || request.getParameter("nowPage").equals(""))
+		 ? 1 : Integer.parseInt(request.getParameter("nowPage"));
+ 
+ //한 페이지에 출력할 게시물의 범위를 결정한다. 계산식은 교안참조(1-10, 11-20, ... )
+ int start = (nowPage-1)*pageSize+1;
+ int end = nowPage * pageSize;
+ 
+ //게시물의 범위를 Map컬렉션에 저장하고 DAO로 전달한다.
+ param.put("start", start);
+ param.put("end", end);
+ /*** 페이지처리 end ***/
+
+ 
  //조건에 맞는 레코드를 select하여 결과셋을 List컬렉션으로 반환했음
- List<BbsDTO> bbs = dao.selectList(param);
+ List<BbsDTO> bbs = dao.selectListPage(param);
  
  //DB자원해제(연결해제)
  dao.close();
@@ -115,12 +150,27 @@
         	*/
         	for(BbsDTO dto : bbs){
         		//전체 레코드수를 이용하여 하나씩 차감하면서 가상번호 부여
-        		vNum = totalRecordCount --;
+        		vNum = totalRecordCount -
+        			(((nowPage-1)*pageSize)+countNum++);
+        		
+        		/*
+        		현재게시물수 : 107개
+        		페이지사이즈 : 10
+        		
+        		현재페이지 1
+        			첫번째 게시물 : 107 - (((1-1)*10)+0) = 107
+       				두번째 게시물 : 107 - (((1-1)*10)+1) = 106
+				현재페이지 2
+              		첫번째 게시물 : 107 - (((2-1)*10)+0) = 97
+              		두번째 게시물 : 107 - (((2-1)*10)+1) = 96
+        		*/
         %>
             <!-- 리스트반복 start -->
                <tr>
                   <td class="text-center"><%=vNum %></td>
-                  <td class="text-left"><a href="BoardView.jsp?num=<%=dto.getNum() %>"><%=dto.getTitle() %></a></td>
+                  <td class="text-left">
+                  	<a href="BoardView.jsp?num=<%=dto.getNum() %>&nowPage=<%=nowPage%>&<%=queryStr%>"><%=dto.getTitle() %></a>
+                  </td>
                   <td class="text-center"><%=dto.getId() %></td>
                   <td class="text-center"><%=dto.getPostDate() %></td>
                   <td class="text-center"><%=dto.getVisitcount() %></td>
@@ -148,10 +198,15 @@
                <button type="button" class="btn btn-light">Light</button>
                <button type="button" class="btn btn-link">Link</button> -->
             </div>
-         </div>
+         </div>      
          <div class="row mt-3">
+         
+            
             <div class="col">
-               <!-- 페이지번호 부분 -->
+            <%=PagingUtil.pagingImg(totalRecordCount,
+		 		pageSize, blockPage, nowPage, "BoardList.jsp?"+queryStr) %>
+		 		<!--
+               	페이지번호 부분
                <ul class="pagination justify-content-center">
                   <li class="page-item"><a href="#" class="page-link"><i class="fas fa-angle-double-left"></i></a></li>
                   <li class="page-item"><a href="#" class="page-link"><i class="fas fa-angle-left"></i></a></li>
@@ -163,8 +218,11 @@
                   <li class="page-item"><a href="#" class="page-link"><i class="fas fa-angle-right"></i></a></li>
                   <li class="page-item"><a href="#" class="page-link"><i class="fas fa-angle-double-right"></i></a></li>
                </ul>
-            </div>            
-         </div>      
+               --> 
+            </div>
+                       
+         </div>
+             
       </div>
    </div>
    <jsp:include page="../common/boardBottom.jsp" />

@@ -1,8 +1,20 @@
+<%@page import="model.BbsDTO"%>
+<%@page import="model.BbsDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%-- 글작성 페이지 진입 전 로그인 체크하기 --%>
+<%-- 글수정 페이지 진입 전 로그인 체크하기 --%>
 <%@ include file="../common/isLogin.jsp" %>
+<%
+//폼값 받기 - 파라미터로 전달된 게시물의 일련번호
+String num = request.getParameter("num");
+BbsDAO dao = new BbsDAO(application);
+
+//게시물을 가져와서 DTO객체로 반환
+BbsDTO dto = dao.selectView(num);
+
+dao.close();
+%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +25,7 @@
 	<div class="row">		
 		<jsp:include page="../common/boardLeft.jsp" />
 		<div class="col-9 pt-3">
-			<h3>게시판 - <small>Write(작성)</small></h3>
+			<h3>게시판 - <small>Edit(수정)</small></h3>
 						
 			<script>
 				//유기명함수
@@ -45,8 +57,14 @@
 						
 			<div class="row mt-3 mr-1">
 				<table class="table table-bordered table-striped">
-				<form name="writeFrm" method="post" action="writeProc.jsp"
+				<form name="writeFrm" method="post" action="EditProc.jsp"
 					onsubmit="return checkValidate(this);" >
+				
+				<!-- 해당 게시물의 일련번호를 전송해야 수행이 가능하다.
+					hidden속성으로 처리하면 화면에서는 사라지지만 서버에서는 값을
+					전송할 수 있다. -->
+				<input type="hidden" name="num" value="<%=dto.getNum() %>" />
+				
 				<colgroup>
 					<col width="20%"/>
 					<col width="*"/>
@@ -70,15 +88,16 @@
 						<th class="text-center"
 							style="vertical-align:middle;">제목</th>
 						<td>
-							<input type="text" class="form-control" name="title" />
+							<input type="text" class="form-control" name="title" 
+								value="<%=dto.getTitle() %>" />
 						</td>
 					</tr>
 					<tr>
 						<th class="text-center"
 							style="vertical-align:middle;">내용</th>
 						<td>
-							<textarea rows="10" 
-								class="form-control" name="content" ></textarea>
+							<textarea rows="10" class="form-control" 
+							name="content" ><%=dto.getContent() %></textarea>
 						</td>
 					</tr>
 					<!-- <tr>
