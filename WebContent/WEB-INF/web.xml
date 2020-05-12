@@ -20,12 +20,6 @@
 		<session-timeout>60</session-timeout>
 	</session-config>
 	
-	<jsp-config>
-		<taglib>
-			<taglib-uri>myTagLibTld</taglib-uri>
-			<taglib-location>/WEB-INF/tlds/MyTagLib.tld</taglib-location>
-		</taglib>
-	</jsp-config>
 	
 	<!-- EL에서 Java클래스의 메소드 호출 절차 및 방법
 	 1. 클래스와 메소드를 정의한다. 단, 메소드 정의시 반드시 public 
@@ -37,9 +31,15 @@
 		 참조한다.
 	 
 	 3. web.xml에 내가 정의한 태그라이브러리 파일을 생성한다.
-	 	taglib_url JSP의 taglib지시어의 uri속성에 삽입할 값
+	 	taglib-uri JSP의 taglib지시어의 uri속성에 삽입할 값
 	 	taglib-location : 실제 tld 파일의 위치(경로를 삽입함)
 	-->
+	<jsp-config>
+		<taglib>
+			<taglib-uri>myTagLibTld</taglib-uri>
+			<taglib-location>/WEB-INF/tlds/MyTagLib.tld</taglib-location>
+		</taglib>
+	</jsp-config>
 	
 
 	<!-- 게시판 페이지처리(Paging)관련 파라미터 PAGE_SIZE : 한페이지에 출력할 게시물의 갯수. 보통 10~30정도로 
