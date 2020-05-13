@@ -37,7 +37,5 @@ File[] fileList = file.listFiles();
 	%>		
 	</ul>
 
-
-
 </body>
 </html>
