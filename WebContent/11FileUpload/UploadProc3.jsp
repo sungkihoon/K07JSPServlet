@@ -1,3 +1,5 @@
+<%@page import="model.MyfileDAO"%>
+<%@page import="model.MyfileDTO"%>
 <%@page import="java.io.File"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.*"%>
@@ -111,6 +113,23 @@ try{
 	for(String s : interArr){
 		inter.append(s+", &nbsp;");
 	}
+	
+	/////////////////////////////////////////////////
+	
+	MyfileDTO dto = new MyfileDTO();
+	dto.setName(name);
+	dto.setTitle(title);
+	dto.setInter(inter.toString());
+	dto.setOfile(mr.getOriginalFileName("chumFile1"));
+	dto.setSfile(realFileName);
+	
+	MyfileDAO dao = new MyfileDAO(); 
+	dao.myfileInsert(dto);
+	
+	response.sendRedirect("FileList.jsp");
+	
+	/////////////////////////////////////////////////
+	
 }catch(Exception e){
 	/*
 		파일업로드시 예외가 발생하면 request영역에 오류메세지를
@@ -120,46 +139,3 @@ try{
 	request.getRequestDispatcher("FileUploadMain.jsp").forward(request, response);
 }
 %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>UploadProc.jsp</title>
-</head>
-<body>
-
-	<h2>파일 업로드 결과</h2>
-	<ul>
-		<li>
-			작성자 : <%=name %>
-		</li>
-		<li>
-			제목 : <%=title %>
-		</li>
-		<li>
-			관심사항 : <%=inter %>
-		</li>
-	</ul>
-
-	<h2>첨부파일1</h2>
-	<ul>
-		<li>원본파일명 : 
-		<%=mr.getOriginalFileName("chumFile1") %></li>
-		<li>서버에저장된파일명(변경전) : 
-		<%=mr.getFilesystemName("chumFile1") %></li>
-		<li>서버에저장된파일명(변경후) : 
-		<%=realFileName %></li>
-		<li>컨텐츠타입 :
-		<%=mr.getContentType("chumFile1") %></li>
-		<li>파일크기 : <%=(int)Math.ceil(newFile.length() / 1024.0) %> Kb
-		</li>
-		<li>이미지표현 : 
-		<img src="../Upload/<%=realFileName %>"
-			width="200" /></li>
-	</ul>
-	
-	<a href="FileList.jsp">파일목록 바로가기</a>
-
-
-</body>
-</html>
