@@ -26,6 +26,7 @@
 		<param-value>5</param-value>
 	</context-param>
 
+
 	<!-- 세션유지시간설정 : 여기서 설정한 시간은 '분' 단위 -->
 	<session-config>
 		<session-timeout>60</session-timeout>
