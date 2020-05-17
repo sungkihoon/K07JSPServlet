@@ -17,8 +17,8 @@
 			</a>
 		</li>
 		<li>
-			<a href="SimpleMVC?type=greating&id=test2&pw=2222">
-				SimpleMVC?type=greating&id=kosm2&pw=2222
+			<a href="SimpleMVC?type=greating&id=kosmo&pw=1111">
+				SimpleMVC?type=greating&id=kosmo&pw=1111
 			</a>
 		</li>
 		<li>
