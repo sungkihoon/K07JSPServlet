@@ -112,6 +112,76 @@ public class DataroomDAO {
 
 	}
 
+	//자료실 글쓰기 처리
+	public int insert(DataroomDTO dto) {
+		
+		int affected = 0;
+		try {
+			String sql = "insert into dataroom ("
+					+" idx, title, name, content, attachedfile, pass, downcount) "
+					+" values ( "
+					+" dataroom_seq.nextval, ?, ?, ?, ?, ?, 0) ";
+			psmt = con.prepareStatement(sql);
+			psmt.setString(1, dto.getTitle());
+			psmt.setString(2, dto.getName());
+			psmt.setString(3, dto.getContent());
+			psmt.setString(4, dto.getAttachedfile());
+			psmt.setString(5, dto.getPass());
+		
+			//insert성공시 1반환, 실패시 0반환
+			affected = psmt.executeUpdate();
+		}catch (Exception e) {
+		
+			e.printStackTrace();
+		}
+		
+		return affected;
+	}
+
+	public void updateVisitCount(String idx) {
+		
+		String sql = "update dataroom set "
+				+" visitcount = visitcount+1 "
+				+" where idx=? ";
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setString(1, idx);
+			psmt.executeUpdate();
+		}catch (Exception e) {}
+		
+	}
+	
+	public DataroomDTO selectView(String idx) {
+		
+		DataroomDTO dto = null;
+		String sql = "select * from dataroom "
+				+" where idx=? ";
+		
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setString(1, idx);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				dto = new DataroomDTO();
+				
+				dto.setIdx(rs.getString(1));
+				dto.setName(rs.getString(2));
+				dto.setTitle(rs.getString(3));
+				dto.setContent(rs.getString(4));
+				dto.setPass(rs.getString(5));
+				dto.setAttachedfile(rs.getString(6));
+				dto.setDowncount(rs.getInt(7));
+				dto.setPass(rs.getString(8));
+				dto.setVisitcount(rs.getInt(9)); //조회수추가
+				
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
+	}
+
 }
 
 

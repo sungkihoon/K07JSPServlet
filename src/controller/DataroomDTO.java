@@ -66,5 +66,4 @@ public class DataroomDTO {
 			this.visitcount = visitcount;
 		}
 		
-		
 }
