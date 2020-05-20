@@ -11,7 +11,7 @@ public class BbsDTO {
 	private String title;         //제목
 	private String content;         //내용
 	private String id;            //작성자 아이디(member테이블 참조)
-	private java.sql.Date postDate;   //작성일
+	private java.sql.Date postdate;   //작성일
 	private String visitcount;      //조회수
 	//멤버변수추가: board와 member테이블의 join을 위해 name컬럼 추가
 	private String name;
@@ -49,10 +49,10 @@ public class BbsDTO {
 		this.id = id;
 	}
 	public java.sql.Date getPostDate() {
-		return postDate;
+		return postdate;
 	}
-	public void setPostDate(java.sql.Date postDate) {
-		this.postDate = postDate;
+	public void setPostDate(java.sql.Date postdate) {
+		this.postdate = postdate;
 	}
 	public String getVisitcount() {
 		return visitcount;
