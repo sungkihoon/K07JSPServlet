@@ -7,24 +7,24 @@
 <meta charset="UTF-8">
 <title>FileUploadMain.jsp</title>
 <script>
-   var isValidate = function(frm){
-      
-      if(frm.name.value==""){
-         alert("이름을 입력하세요");
-         frm.name.focus();
-         return false;
-      }
-      if(frm.title.value==""){
-         alert("제목을 입력하세요");
-         frm.title.focus();
-         return false;
-      }
-      if(frm.chumFile1.value==""){
-         alert("첨부파일1은 필수 입력입니다");
-         frm.chumFile1.focus();
-         return false;
-      }
-   }
+	var isValidate = function(frm) {
+
+		if (frm.name.value == "") {
+			alert("이름을 입력하세요");
+			frm.name.focus();
+			return false;
+		}
+		if (frm.title.value == "") {
+			alert("제목을 입력하세요");
+			frm.title.focus();
+			return false;
+		}
+		if (frm.chumFile1.value == "") {
+			alert("첨부파일1은 필수 입력입니다");
+			frm.chumFile1.focus();
+			return false;
+		}
+	}
 </script>
 </head>
 <body>

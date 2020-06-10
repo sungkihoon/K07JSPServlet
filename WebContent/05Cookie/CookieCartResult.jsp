@@ -15,7 +15,7 @@ String[] products = request.getParameterValues("cart");
 for(String goods : products){
 	/*
 	쿠키를 생성할때 이름과 값을 동일하게 설정한다
-	결오는 설정되었지만 유효기간이 설정되지 않았으므로 해당 쿠키는
+	경로는 설정되었지만 유효기간이 설정되지 않았으므로 해당 쿠키는
 	웹브라우저를 닫을때 같이 소멸된다.
 	*/
 	Cookie cookie =new Cookie(goods,goods);

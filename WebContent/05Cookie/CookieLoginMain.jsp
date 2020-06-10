@@ -50,10 +50,11 @@ if(cookies!=null){
 				<!-- 변수 user에 저장된 값이 있을때 checkbox의 checked속성을
 				활성화한다. -->
 				<input type="checkbox" name="id_save" value="Y"
-					tabindex="3"
-					<% if(user.length()!=0){ %>
-					<% } %>
-					 /> 아이디 저장하기
+               tabindex="3"
+               <% if(user.length() != 0) { %>
+                  checked="checked" 
+               <% } %>
+               />아이디저장하기
 			</td>
 		</tr>
 		<tr>
